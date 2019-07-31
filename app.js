@@ -5,6 +5,7 @@ const signupRoutes = require("./routes/signup");
 const loginRoutes = require("./routes/login");
 const indexRoutes = require("./routes/index");
 const sequelize = require("./utils/database");
+const flash = require("connect-flash");
 
 const app = express();
 
@@ -13,13 +14,12 @@ app.set("views", "views");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
-
-const PORT = process.env.PORT || 3000;
+app.use(flash());
 
 app.use(loginRoutes);
 app.use(signupRoutes);
 app.use("/", indexRoutes);
-
+const PORT = process.env.PORT || 3000;
 sequelize
   .sync()
   .then(() => {
